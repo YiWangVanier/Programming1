@@ -25,6 +25,40 @@ public class Student {
         this.registeredCourses = new ArrayList<>();
     }
 
+    /**
+     * registers a course, add the course to the student's registeredCourses list,
+     * and add the student to the course's registeredStudents list.
+     * If the course is already registered, directly returns false
+     * @param course a course that is about to be registered
+     * @return true if a course is successfully registered
+     */
+    public boolean registerCourse(Course course) {
+        if (registeredCourses.contains(course)) {
+            System.out.printf("Operation failed. %s is already registered\n", course.getCourseName());
+            return false;
+        }
+        registeredCourses.add(course);
+        course.getRegisteredStudents().add(this);
+        return true;
+    }
+
+    /**
+     * drops a course, remove the course from the student's registeredCourses list,
+     * and remove the student from the course's registeredStudents list.
+     * If the course is not registered yet, directly returns false
+     * @param course a course that is about to be dropped
+     * @return true if a course is successfully dropped
+     */
+    public boolean dropCourse(Course course) {
+        if (!registeredCourses.contains(course)) {
+            System.out.printf("Operation failed. %s is not registered yet\n", course.getCourseName());
+            return false;
+        }
+        registeredCourses.remove(course);
+        course.getRegisteredStudents().remove(this);
+        return true;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
