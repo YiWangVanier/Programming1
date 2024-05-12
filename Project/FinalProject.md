@@ -2,16 +2,10 @@
 
 Submission:
 
-Please create UML class diagram for the following project. Send a `.md` file with only the link of your class diagram on Visual Paradigm. The student number and the student name MUST be added as text in the class diagram.
+A `public` git repository must be created and maintained for the final project. Git comments history and `README` file will be evaluated. 
 
-There is no need to upload any source code for this assignment.
+A `.md` file with the link to the git repository should be submitted.
 
-Knowledge Points of This Assignment:
-
-1. UML class diagram
-2. Association
-3. Aggregation
-4. Composition
 
 ## Class1
 
@@ -25,16 +19,35 @@ A class of `Address` that contains
   4. `String province`
   5. `String postalCode`
   6. `String country`
+
 - Methods
 
-  1. `static boolean isPostalCodeValid(String postalCode)`     // checks if a postcode is valid or not. The length of a postal code can either be 6 or 7, if the length is 6, then it must follow the format: `CDCDCD`, where C is a character, while D is a digit. Case-insensitive; if the length is 7, then it must follow the format: `CDC DCD`. The method is Case-insensitive. Note: this method is a static method, which means it requires a parameter of `postalCode` instead of using the field `postalCode`, the reason of this is because this method should be called in the consturctor, before assigning the input `postalCode` to the field `postalCode`, only valid `postalCode` will be assigned to fields, or `null` will be assigned
-  2. All argument Constructor, in which it will directly assign the paramter to fields, except `postalCode`, the method `isPostalCodeValid()` will first be called to check if the parameter `postalCode` is valid or not, if it is valid, then assign it with all character uppercase to the field.
+  1. `static boolean isPostalCodeValid(String postalCode)`     // checks if a postcode is valid or not. The length of a postal code can either be `6` or `7`, 
+     1. if the length is `6`, then it must follow the format: `CDCDCD`, 
+     2. if the length is `7`, then it must follow the format: `CDC DCD`.
+     3. where `C` is a character, while `D` is a digit. Case-insensitive; 
+     4. Note: this method is a static method, which means it requires a parameter of `postalCode` instead of using the field `postalCode`, the reason of this is because this method should be called in the constructor, before assigning the input `postalCode` to the field `postalCode`, only valid `postalCode` will be assigned to fields, or `null` will be assigned
+  2. All argument Constructor, in which the method `isPostalCodeValid()` will first be called to check if the parameter `postalCode` is valid or not, if it is valid, then set all fields, while postal code with all character uppercase to the field, else set everything as `null`.
   3. toString
   4. equals
   5. getter
   6. setter
 
 ## Class 2
+
+A class of `Department` that contains
+
+- Fields
+
+1. `String departmentId` // 2-digits starts with a character `D`
+2. `String departmentName`
+3. `static int nextId` // indicates the next ID that will be used
+
+* Methods
+
+1. `boolean validateDepartmentName(String departmentName)` // checks if a department name is valid or not, a department name should only contain letters or space
+
+## Class 3
 
 A class of `Student` that contains
 
@@ -46,50 +59,18 @@ A class of `Student` that contains
 4. `Address address`
 5. `Department department`
 6. `Course[]/ArrayList<Course> registeredCourses`
-7. `double[]/ArrayList<Double> finaScores`;
-8. `static int nextId`   // indicates the next ID that will be used
+7. `static int nextId` // indicates the next ID that will be used
 
 - Methods
 
-1. `boolean registerCourse(String course)` // registers a course for the student. If the student has registered the course already, directly returns `false`. Otherwise, adds the course into the student's `registeredCourses`, and adds the student into the course's `registeredStudents` and return `true`
-2. `boolean dropCourse(String courseId)` // drops a course of a student. If the student has not taken the course, directly returns `false`, else removes the course from the student's `registeredCourses` and removes the student from the course's `registeredStudents`
-3. Constructor with `stuentName`, `gender`, `address`, and `department`, it will create a student with `studentId` automatically generated based on the `nextId`, and `registeredCourses` as emtpy object
-4. `equals`
-5. `toString` // prints everything about the student, for the registered coures, only prints the name of the course. // hint: cannot use lombok, needs to write the toString method and turn the courses part.
-
-## Class 3
-
-A class of `Course` that contains
-
-- Fields
-
-1. `String courseId`  // 6-digits starts with a character `C`
-2. `String courseName`
-3. `double credits`
-4. `Department department`
-5. `Assignment[]/ArrayList<Assignment> assignments`
-6. `Student[]ArrayList<Student> registeredStudents`
-7. `static int nextId`   // indicates the next ID that will be used
-
-- Methods
-
-1. `boolean isAssignmentWeightValid()`   // checks if the sum of weights of all assignments of that course equals to 1 (100%)
-2. `int[] calcAssignmentsAverage()`      // calculates the average score for each assignment.
-3. `int[] calcStudentsAverage()`         // calculates the average score for each student
-
-Example:
-
-Assume one course contains 4 assignments, and all of them have weight `0.25` equally. With the following fake scores:
-
-|          | Assignment1 | Assignment2 | Assignment3 | Assignment4 |
-| -------- | ----------- | ----------- | ----------- | ----------- |
-| Student1 | 95          | 98          | 84          | 77          |
-| Student2 | 67          | 55          | 62          | 47          |
-| Student3 | 85          | 81          | 74          | 97          |
-
-`calcAssignmentsAverage()` calculates the averages for assignment1, assgnment2, assignment3 and assignemnt4, and returns the result in an array such as {82, 78, 73, 74}. Results are rounded to `int`.
-
-`calcStudentsAverage()` calculates the weighted averages for student1, student2 and student3, and returns the result in an array such as {89, 58, 84}. Results are rounded to `int`.
+1. `boolean registerCourse(String course)` // registers a course, add the course to the student's registeredCourses list, and add the student to the course's registeredStudents list. If the course is already registered, directly returns `false`
+2. `boolean dropCourse(String courseId)` // drops a course, remove the course from the student's registeredCourses list, and remove the student from the course's registeredStudents list. If the course is not registered yet, directly returns `false`
+3. Constructor with `studentName`, `gender`, `address`, and `department`, it will create a student with `studentId` automatically generated based on the `nextId`, and `registeredCourses` as empty object
+4. `toSimplifiedString` // converts a student to a simple string with only the `studentId`, the `studentName`, and `departmentName`. This method is called in `Course` `toString()`.
+5. `toString` converts a student to a string that contains the `studentId`, the `studentName`, the `gender`, the `address` and the `department`, and the `registeredCourses` (only the `courseId`, the `courseName`, and the `departmentName`)
+6. equals
+7. getters
+8. setters
 
 ## Class 4
 
@@ -101,15 +82,88 @@ A class of `Assignment` that contains
 2. `String assignmentName`
 3. `double weight`
 4. `int maxScore`
-5. `static int nextId`
-6. // TODO: scores?
+5. `double assignmentAverage`
+6. `int[]/ArrayList<Integer> scores`
+7. `static int nextId`
+
+- Methods
+
+1. `void calcAssignmentAvg()` // calculates the average score for one assignment
+2. `void generateRandomScore()` // generates random scores for all students in an assignment, the scores are generated with the following rule: Firstly generate a random number in range `[0, 10]`, then
+   
+   * if the number is `0`, then generate a random score in range `[0, 60)` for the student
+   * if the number is `1`, `2`, then generate a random score in range `[60, 70)` for the student
+   * if the number is `3`, `4`, then generate a random score in range `[70, 80)` for the student
+   * if the number is `5`, `6`, `7`, `8`, then generate a random score in range `[80, 90)` for the student
+   * if the number is `9`, `10`, then generate a random score in range `[90, 100]` for the student
+
+   1. `toString` // generates a string to represent an assignment, with assignmentId, assignmentName, weight and maxScore
 
 ## Class 5
 
-A class of `Department` that contains
+A class of `Course` that contains
 
 - Fields
 
-1. `String departmentId`  // 2-digits starts with a character `D`
-2. `String departmentName`
-3. `static int nextId`    // indicates the next ID that will be used
+1. `String courseId` // `C-departmentId-twoDigitCourseId`, e.g.: `C-D01-01`
+2. `String courseName`
+3. `double credits`
+4. `Department department`
+5. `Assignment[]/ArrayList<Assignment> assignments`
+6. `Student[]/ArrayList<Student> registeredStudents`
+7. `double[]/ArrayList<Double> finalScores`
+8. `static int nextId` // indicates the next ID that will be used
+
+- Methods
+
+1. `boolean isAssignmentWeightValid()`   // checks if the sum of weights of all assignments of that course equals to 1 (100%)
+2. `boolean registerStudent(Student student)`  // adds a student to the student list of the course, also expand the score size for each assignment of this course, and add a new `null` element for the finalScores.
+3. `int[] calcStudentsAverage()` // calculates the weighted average score of a student.
+4. `boolean addAssignment(String assignmentName, double weight, int maxScore)` // adds a new assignment to the course
+5. `void generateScores()` // generates random scores for each assignment and student, and calculate the final score for each student.
+6. `void displayScores()` // displays the scores of a course in a table, with the assignment averages and student weighted average
+    ``` data
+      example:
+      Course: Programming 1(C-D00-01)
+                        Assignment01   Assignment02   Assignment03         Exam01         Exam02    Final Score
+              Yi Wang             82             82             76             85             80             82
+              Yi Wang             97             92             84             67             90             83
+              Yi Wang             91             68             82             83             83             82
+      
+              Average             90             81             81             78             84
+    ```
+7. `String toSimplifiedString()` // converts a course to a simple string with only the `courseId`, `courseName`, `credits`, and `departmentName`.
+8. `String toString()` // converts a course to a string that contains the `courseId`, the `courseName`, the credits, the `departmentName` the `assignments`, and the `registeredStudents` (only the `studentId`, the `studentName` and the `departmentName`)
+9. equals
+10. getter
+11. setter
+
+## Class 6
+
+A enum of `Gender` that contains `FEMALE` and `MALE`
+
+## Class 7
+
+A class `Util` locates in a new package `util` which contains 
+
+- Methods:
+- 
+1. `String toTitleCase(String strIn)` // converts each word in a a string to title case, such as `Yi Wang`, `Computer Science`. You can 
+   1. simply assume the string `strIn` only contains two words with one space in between,
+   2. or you can implement the method for general situation, in this case, `str.split()` method will be used. 
+   3. All `studentName`, `departmentName`, `courseName` needs to be in title case.
+
+
+## Unit Testing
+
+The following methods requires unit testing:
+
+1. `Address`
+   1. `isPostalCodeValid`
+2. `Assignment`
+   1. `calcAssignmentAvg` // you will need to create object of an assignment, then use setter to change the scores of it, instead of using the random generated scores.
+   2. `isAssignmentsTotalWeightValid`
+3. `Course`
+   1. `calcStudentAvg`
+4. `Util`
+   1. `toTitleCase`

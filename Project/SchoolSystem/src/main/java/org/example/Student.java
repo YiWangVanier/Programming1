@@ -1,12 +1,14 @@
 package org.example;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
+import org.example.util.Util;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-@EqualsAndHashCode
 @Getter
+@Setter
 public class Student {
     private String studentId;
     private String studentName;
@@ -18,7 +20,7 @@ public class Student {
 
     public Student(String studentName, Gender gender, Address address, Department department) {
         this.studentId = String.format("S%06d", nextId++);
-        this.studentName = studentName;
+        this.studentName = Util.toTitleCase(studentName);
         this.gender = gender;
         this.address = address;
         this.department = department;
@@ -34,11 +36,13 @@ public class Student {
      */
     public boolean registerCourse(Course course) {
         if (registeredCourses.contains(course)) {
-            System.out.printf("Operation failed. %s is already registered\n", course.getCourseName());
+            System.out.printf("Registration failed. %s is already registered.\n", course.getCourseName());
             return false;
         }
+
         registeredCourses.add(course);
-        course.getRegisteredStudents().add(this);
+        course.registerStudent(this);
+        System.out.printf("Registration of course %s Success.\n", course.getCourseName());
         return true;
     }
 
@@ -51,23 +55,64 @@ public class Student {
      */
     public boolean dropCourse(Course course) {
         if (!registeredCourses.contains(course)) {
-            System.out.printf("Operation failed. %s is not registered yet\n", course.getCourseName());
+            System.out.printf("Drop failed. %s is not registered yet\n", course.getCourseName());
             return false;
         }
+
         registeredCourses.remove(course);
         course.getRegisteredStudents().remove(this);
+        System.out.printf("Drop course %s Success.\n", course.getCourseName());
         return true;
     }
 
+    /**
+     * converts a student to a simple string with only the studentId, studentName, and departmentName
+     * @return a simple string to represent the student
+     */
+    public String toSimplifiedString() {
+        return "Student{\n" +
+                "\t\t\tstudentId='" + studentId + "'\n" +
+                "\t\t\tstudentName='" + studentName + "'\n" +
+                "\t\t\tdepartment=" + department.getDepartmentName() + "\n}";
+    }
+
+    /**
+     * converts a student to a string that contains the studentId, the studentName, the gender, the address
+     * and the department, and the registered courses (only the courseId, courseName, and departmentName)
+     * @return a detailed string to represent a student
+     */
     @Override
     public String toString() {
-        return "Student{" +
-                "studentId='" + studentId + '\'' +
-                ", studentName='" + studentName + '\'' +
-                ", gender=" + gender +
-                ", address=" + address +
-                ", department=" + department +
-                ", registeredCourses=" + registeredCourses +
-                '}';
+        String str = "Student{\n" +
+                "\tstudentId='" + studentId + "'\n" +
+                "\tstudentName='" + studentName + "'\n" +
+                "\tgender=" + gender + "\n" +
+                "\taddress=" + address + "\n" +
+                "\tdepartment=" + department.getDepartmentName() + "\n" +
+                "\tregisteredCourses=\n";
+
+        for (Course course : registeredCourses) {
+            str += "\t\t" + course.toSimplifiedString() + '\n';
+        }
+
+        return str + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(studentId, student.studentId)
+                && Objects.equals(studentName, student.studentName)
+                && gender == student.gender
+                && Objects.equals(address, student.address)
+                && Objects.equals(department, student.department)
+                && Objects.equals(registeredCourses, student.registeredCourses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentId, studentName, gender, address, department, registeredCourses);
     }
 }

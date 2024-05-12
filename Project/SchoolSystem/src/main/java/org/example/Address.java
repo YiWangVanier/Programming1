@@ -19,11 +19,15 @@ public class Address {
     private String country;
 
     public Address(int streetNo, String street, String city, String province, String postalCode, String country) {
+        if (!isPostalCodeValid(postalCode)) {
+            System.out.printf("%s is invalid for postal code\n", postalCode);
+            return;
+        }
         this.streetNo = streetNo;
         this.street = street;
         this.city = city;
         this.province = province;
-        this.postalCode = isPostalCodeValid(postalCode) ? postalCode.toUpperCase() : null;
+        this.postalCode = postalCode.toUpperCase();
         this.country = country;
     }
 
@@ -33,7 +37,7 @@ public class Address {
      * if the length is 7, then it is "CDC DCD"
      * where C is a character, and D is a digit
      *
-     * @param postalCode
+     * @param postalCode the postal code of an address
      * @return if a postal code is valid or not
      */
     public static boolean isPostalCodeValid(String postalCode) {
