@@ -568,12 +568,53 @@ public static void main(String[] args) {
 
 For the `gender` field in the `Student` class, currently, we declare its datatype as `String`, so it cannot be a number such as `3` or `3.14`, However, someone can still put a value of `"hello"` in it, which is illegal for a gender. Let's say now the gender can only be three values: `female`, `male` and `others`, while all other values should be considered as invalid for the system. We can use `enum` to add this kind of restriction for the choices, which stands for "enumerate".
 
-An `Enum` is like a class, but only the values listed inside can be given to an object of the enum. For example:
+The `enum` is A special data type that contains predefined constants, for example:
 
 ```java
 // defines an enum for gender, which only contains three constants
 public enum Gender {
     FEMALE, MALE, OTHERS
+}
+```
+
+### 6.1 Enum Methods
+1. `values()` returns an array that contains all elements of an enum.
+2. `ordinal()` returns the index of an element in an enum.
+
+``` java
+    for (Gender gender : Gender.values()) {
+        System.out.printf("%d: %s", gender.ordinal() + 1, gender);  
+    }
+    // 1: FEMALE
+    // 2: MALE
+    // 3: OTHERS
+```
+
+### 6.2 Defining Methods In An Enum
+You can also add user-defined methods in an enum. First, a semicolon (`;`) must be added at the end of elements. 
+
+``` java
+public enum Gender {
+    FEMALE, MALE, OTHERS;
+
+    // a toy example of creating a method in enum
+    public String getColor() {
+        return switch (this) {
+            case FEMALE -> "Red";
+            case MALE -> "Blue";
+            case OTHERS -> "Green";
+        };
+    }
+}
+
+public static void main(String[] args) {
+    for (Gender gender : Gender.values()) {
+        System.out.printf("%d: %s in color %s\n", gender.ordinal() + 1, gender, gender.getColor());
+    }
+
+    // 1: FEMALE in color Red
+    // 2: MALE in color Blue
+    // 3: OTHERS in color Green
 }
 ```
 
